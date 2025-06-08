@@ -1,5 +1,6 @@
 package com.rhydo.dreamshops.service.product;
 
+import com.rhydo.dreamshops.dto.ImageDto;
 import com.rhydo.dreamshops.dto.ProductDto;
 import com.rhydo.dreamshops.exceptions.ProductNotFoundException;
 import com.rhydo.dreamshops.model.Category;
@@ -116,8 +117,18 @@ public class ProductService implements IProductService {
     }
 
     @Override
+    public List<ProductDto> getConvertedProducts(List<Product> products) {
+        return products.stream().map(this::convertToDto).toList();
+    }
+
+    @Override
     public ProductDto convertToDto(Product product) {
         ProductDto productDto = modelMapper.map(product, ProductDto.class);
         List<Image> images = imageRepository.findByProductId(product.getId());
+        List<ImageDto> imageDtos = images.stream()
+                .map(image -> modelMapper.map(image, ImageDto.class))
+                .toList();
+        productDto.setImages(imageDtos);
+        return productDto;
     }
 }
