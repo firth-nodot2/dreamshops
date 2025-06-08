@@ -1,5 +1,6 @@
 package com.rhydo.dreamshops.service.product;
 
+import com.rhydo.dreamshops.dto.ProductDto;
 import com.rhydo.dreamshops.model.Product;
 import com.rhydo.dreamshops.request.AddProductRequest;
 import com.rhydo.dreamshops.request.ProductUpdateRequest;
@@ -18,4 +19,6 @@ public interface IProductService {
     List<Product> getProductsByName(String name);
     List<Product> getProductsByBrandAndName(String brand, String name);
     Long countProductsByBrandAndName(String brand, String name);
+
+    ProductDto convertToDto(Product product);
 }

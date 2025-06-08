@@ -1,13 +1,17 @@
 package com.rhydo.dreamshops.service.product;
 
+import com.rhydo.dreamshops.dto.ProductDto;
 import com.rhydo.dreamshops.exceptions.ProductNotFoundException;
 import com.rhydo.dreamshops.model.Category;
+import com.rhydo.dreamshops.model.Image;
 import com.rhydo.dreamshops.model.Product;
 import com.rhydo.dreamshops.repository.CategoryRepository;
+import com.rhydo.dreamshops.repository.ImageRepository;
 import com.rhydo.dreamshops.repository.ProductRepository;
 import com.rhydo.dreamshops.request.AddProductRequest;
 import com.rhydo.dreamshops.request.ProductUpdateRequest;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,6 +22,8 @@ import java.util.Optional;
 public class ProductService implements IProductService {
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
+    private final ModelMapper modelMapper;
+    private final ImageRepository imageRepository;
 
     @Override
     public Product addProduct(AddProductRequest request) {
@@ -107,5 +113,11 @@ public class ProductService implements IProductService {
     @Override
     public Long countProductsByBrandAndName(String brand, String name) {
         return productRepository.countByBrandAndName(brand, name);
+    }
+
+    @Override
+    public ProductDto convertToDto(Product product) {
+        ProductDto productDto = modelMapper.map(product, ProductDto.class);
+        List<Image> images = imageRepository.findByProductId(product.getId());
     }
 }
