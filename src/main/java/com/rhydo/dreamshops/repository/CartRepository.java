@@ -1,0 +1,7 @@
+package com.rhydo.dreamshops.repository;
+
+import com.rhydo.dreamshops.model.Cart;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface CartRepository extends JpaRepository<Cart, Long> {
+}
