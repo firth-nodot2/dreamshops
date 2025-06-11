@@ -1,5 +1,6 @@
 package com.rhydo.dreamshops.service.user;
 
+import com.rhydo.dreamshops.dto.UserDto;
 import com.rhydo.dreamshops.exceptions.AlreadyExistsException;
 import com.rhydo.dreamshops.exceptions.ResourceNotFoundException;
 import com.rhydo.dreamshops.model.User;
@@ -7,6 +8,7 @@ import com.rhydo.dreamshops.repository.UserRepository;
 import com.rhydo.dreamshops.request.CreateUserRequest;
 import com.rhydo.dreamshops.request.UserUpdateRequest;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -15,6 +17,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserService implements IUserService {
     private final UserRepository userRepository;
+    private final ModelMapper modelMapper;
 
     @Override
     public User getUserById(Long userId) {
@@ -54,5 +57,10 @@ public class UserService implements IUserService {
                 .ifPresentOrElse(userRepository ::delete, () -> {
                     throw new ResourceNotFoundException("User not found");
                 });
+    }
+
+    @Override
+    public UserDto convertUserToDto(User user) {
+        return modelMapper.map(user, UserDto.class);
     }
 }
